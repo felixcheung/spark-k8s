@@ -1,0 +1,25 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sparkworker
+  namespace: spark
+spec:
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: spark
+        component: sparkworker
+    spec:
+      containers:
+      - name: sparkworker
+        image: $IMAGE_NAME
+        args:
+        - worker
+        ports:
+        - containerPort: 8081
+          name: workerwebui
+        env:
+        - name: MASTER_URL
+          value: "spark://sparkmaster:7077"

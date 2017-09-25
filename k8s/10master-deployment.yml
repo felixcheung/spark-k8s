@@ -1,0 +1,29 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+# do not use spark-master - env name conflicts with Spark's
+  name: sparkmaster
+  namespace: spark
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: spark
+        component: sparkmaster
+    spec:
+      containers:
+      - name: sparkmaster
+        image: $IMAGE_NAME
+        args:
+        - master
+        ports:
+        - containerPort: 7077
+          name: master
+        - containerPort: 6066
+          name: masterrest
+        - containerPort: 8080
+          name: webui
+        - containerPort: 4040
+          name: driverwebui

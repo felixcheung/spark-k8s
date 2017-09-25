@@ -1,0 +1,37 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sparkclient
+  namespace: spark
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: spark
+        component: sparkclient
+    spec:
+      containers:
+      - name: sparkclient
+        image: $IMAGE_NAME
+        command:
+          - sh
+          - -c
+          - "exec tail -f /dev/null"
+        ports:
+        - containerPort: 4040
+          name: driverwebui
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sparkclient
+  namespace: spark
+spec:
+  ports:
+  - name: driverwebui
+    port: 4040
+  selector:
+    app: spark
+    component: sparkclient
