@@ -21,6 +21,7 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
+# Python
 RUN set -ex; \
  apt-get update; \
  apt-get install -y curl unzip python3 python3-setuptools; \
@@ -33,6 +34,16 @@ RUN set -ex; \
 ENV PYTHONHASHSEED 0
 ENV PYTHONIOENCODING UTF-8
 ENV PIP_DISABLE_PIP_VERSION_CHECK 1
+
+# R
+RUN set -ex; \
+ echo '' >> /etc/apt/sources.list; \
+ echo 'deb http://cran.cnr.Berkeley.edu/bin/linux/debian stretch-cran34/' >> /etc/apt/sources.list; \
+ apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2AD5F960A256A04AF'; \
+ apt-get update; \
+ apt-get -y install r-base r-base-dev; \
+ apt-get clean; \
+ rm -rf /var/lib/apt/lists/*
 
 # JAVA
 ARG JAVA_MAJOR_VERSION=8
